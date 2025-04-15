@@ -1,0 +1,211 @@
+<div id="mobile-menu-slider" class="mobile-menu-slider">
+    <button id="menu_close" class="menu_close">x</button>
+
+  <div id="dropdown_container_menu" class="dropdown_container_menu">
+    <div class="dropdown menu-slider-dropdown">
+      <ul class="menu slider-menu slider-menu-mobile" id="mobile_menu">
+
+        {% for link in linklists.sidebar-menu.links %}
+  {% if linklists[link.handle] == empty %}
+    <li data-mobile-dropdown-rel="{{ link.handle }}">
+      {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
+        <a data-no-instant href="{{ link.url }}" class="parent-link--false mobile-menu-link">
+          {{ link.title }}
+        </a>
+      {% else %}
+        <a data-no-instant href="{{ link.url }}" class="parent-link--true mobile-menu-link">
+          {{ link.title }}
+        </a>
+      {% endif %}
+    </li>
+  {% else %}
+    <li data-mobile-dropdown-rel="{{ link.handle }}" class="sublink">
+      {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
+        <a data-no-instant href="{{ link.url }}" class="parent-link--false mobile-menu-link">
+          {{ link.title }} <span class="right icon-down-arrow"></span>
+        </a>
+      {% else %}
+        <a data-no-instant href="{{ link.url }}" class="parent-link--true mobile-menu-link">
+          {{ link.title }} <span class="right icon-down-arrow"></span>
+        </a>
+      {% endif %}
+      <ul>
+        {% for link in linklists[link.handle].links %}
+          {% if linklists[link.handle] == empty %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% else %}
+            <li class="sublink">
+              {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
+                <a data-no-instant href="{{ link.url }}" class="parent-link--false mobile-menu-link">
+                  {{ link.title }} <span class="right icon-down-arrow"></span>
+                </a>
+              {% else %}
+                <a data-no-instant href="{{ link.url }}" class="parent-link--true mobile-menu-link">
+                  {{ link.title }} <span class="right icon-down-arrow"></span>
+                </a>
+              {% endif %}
+              <ul>
+                {% for link in linklists[link.handle].links %}
+                  <li><a class="mobile-menu-link" href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+  {% endif %}
+{% endfor %}
+
+        {% if section.settings.phone_number != blank %}
+          <li><a class="mobile-menu-link" href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
+        {% endif %}
+
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li>
+              <a class="mobile-menu-link" href="/account" data-no-instant>{{ customer.name }}</a>
+            </li>
+            <li class="mobile-menu-link" data-no-instant>
+              {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            </li>
+          {% else %}
+            <li class="mobile-menu-link" data-no-instant>
+              {{ 'layout.customer.log_in' | t | customer_login_link }}
+            </li>
+          {% endif %}
+        {% endif %}
+        {% if settings.show_multiple_currencies %}
+          <li class="mobile-menu-link">
+            {% include 'currencies-switcher' %}
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .mobile-menu-slider {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 100vh;
+    z-index: 99999;
+    background-color: #000;
+    color: white;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-flow: column nowrap;
+    opacity: 0.9;
+    overflow-y: auto;
+  }
+
+    .mobile-menu-slider ul {
+      list-style-type: none;
+  }
+
+     .mobile-menu-slider ul {
+      list-style-type: none;
+  }
+
+  .mobile-menu-slider.isActive {
+    right: 0%;
+  }
+
+  .mobile-menu-slider ul {
+    list-style-type: none;
+  }
+
+  .mobile-menu-list {
+    list-style-type: none;
+  }
+
+  .slider-menu-mobile{
+    display: block;
+    border: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .slider-menu-mobile{
+    display: block;
+    border: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  #customer_login_link {
+    text-transform: uppercase !important;
+  }
+  
+  .mobile-menu-link:hover {
+    color: #969595 !important;
+  }
+
+  .mobile-menu-link a:hover {
+    color: #969595 !important;
+  }
+
+  .mobile-menu-link:focus {
+    font-size: 14px: !important;
+    color: #969595 !important;
+  }
+
+  .menu_close {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    background: none !important;
+    text-align: right;
+    width: 100vw;
+    height: 20px;
+    color: white;
+    font-weight: 900;
+    font-size: 20px;
+    border: none !important;
+    height: 40px; 
+  }
+
+  .slider-menu a {
+    font-size: 14px !important;
+  }
+
+  .slider-menu a:active {
+    font-size: 14px !important;
+  }
+
+  .slider-menu li {
+    margin-top: 20px !important;
+  }
+
+  .menu-slider-dropdown {
+    padding-top: 20px !important;
+    position: absolute !important;
+    height: calc(100vh - 64px) !important;
+    width: 100vw !important;
+    background: transparent !important;
+  }
+</style>
+
+<script>
+  const menuButton = document.getElementById('mobile_menu_nav')
+  const menuClose = document.getElementById('menu_close')
+  const menuSlider = document.getElementById('mobile-menu-slider')
+
+  
+  menuButton.addEventListener('click', function (event) {
+    console.log("click")
+    menuSlider.classList.toggle('isActive')
+    },
+  )
+
+  menuClose.addEventListener('click', function (event) {
+      menuSlider.classList.toggle('isActive')
+    }
+  )
+
+</script>

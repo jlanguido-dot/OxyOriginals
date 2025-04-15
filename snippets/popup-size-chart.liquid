@@ -1,0 +1,36 @@
+  
+{%- assign chart = "size-chart" -%}
+
+{%- if pages[product.type | handleize | append: "-size-chart"] != empty -%}
+{%- assign chart = product.type | handleize | append: "-size-chart" -%}
+{%- endif -%}
+
+  {%- for tag in product.tags -%}
+   {%- assign chart_tag = tag | handleize | append: "-size-chart" -%}
+
+   {%- if pages[chart_tag] != empty -%}
+	{%- assign chart = chart_tag -%}
+    {%- break -%}
+   {%- endif -%}
+
+  {%- endfor -%}
+
+  {%- assign size_chart_page = pages[chart] -%}
+
+<div class="remodal" data-remodal-id="size-chart{{product_id}}" data-remodal-options="hashTracking: false">
+<a data-remodal-action="close" class="remodal-close"></a>
+
+  
+  
+  {% if size_chart_page != blank %}
+      <h5 class="center">{{ size_chart_page.title }}</h5>
+    <div class="feature_divider"></div>
+    {{ size_chart_page.content }}
+  
+  {% elsif settings.size_chart != blank %}
+    <h5 class="center">{{ pages[settings.size_chart].title }}</h5>
+    <div class="feature_divider"></div>
+    {{ pages[settings.size_chart].content }}
+  {% endif %}
+
+</div>

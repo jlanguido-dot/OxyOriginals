@@ -1,0 +1,196 @@
+{%- assign schema_settings = settings -%}
+
+<div id="mobile-cart-container" class="mobile-cart-container">
+  <button class="cart_close">x</button>
+    {% unless settings.cart_action == 'ajax' and template contains 'cart' %}
+      <div class="cart_content_slider">
+        <div class="js-empty-cart__message {% if cart.item_count > 0 %}hidden{% endif %}">
+          <p class="empty_cart">{{ 'layout.general.empty_cart' | t }}</p>
+        </div>
+        <form action="/checkout" method="post" data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}" data-shop-name="{{ shop.name | escape }}" class="js-cart_content__form {% if cart.item_count == 0 %}hidden{% endif %}">
+          <ul class="cart_items js-cart_items clearfix">
+            {% assign total_saving = 0 %}
+            {% for item in cart.items %}
+              {% if item.variant.compare_at_price > item.variant.price %}
+                {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+                {% assign total_saving = saving | plus: total_saving %}
+              {% endif %}
+
+              <li class="cart_item clearfix">
+                <a href="{{ item.url }}">
+                  {% if item.image %}
+                    <div class="cart_image">
+                      <img src="{{ item | img_url: '320x' }}" alt="{{ item.title | escape }}" />
+                    </div>
+                  {% endif %}
+                  <strong class="right price">
+                    {% if item.price < item.variant.compare_at_price %}
+                      <span class="money was_price">{{ item.variant.compare_at_price | money }}</span>
+                    {% endif %}
+
+                    <span class="money">{{ item.price | money }}</span>
+                  </strong>
+                  <div class="item_title">
+                    {{ item.product.title }}
+                    {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                      -
+                      {% for option in item.product.options %}
+                        {{ item.variant.options[forloop.index0] }} {% unless forloop.last %}/{% endunless %}
+                      {% endfor %}
+                    {% endunless %}
+                    {% if item.properties %}
+                      {% for p in item.properties %}
+                        {% if p.last != blank %}
+                          <div class="line-item">
+                            {{ p.first }}: {{ p.last }}
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                </a>
+                <div class="left product-quantity-box">
+                  <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
+                  <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" />
+                  <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+          <hr />
+          <ul>
+            <li class="cart_subtotal js-cart_subtotal">
+              <span class="right">
+                <span class="money">{{ cart.total_price | money }}</span>
+              </span>
+              <span>{{ 'layout.general.subtotal' | t }}</span>
+            </li>
+            {% if settings.display_savings %}
+              <li class="cart_savings sale js-cart_savings">
+                {% if total_saving > 0 %}
+                  <span class="right">
+                    <span class="money">{{ total_saving | money }}</span>
+                  </span>
+                  <span>{{ 'layout.general.savings' | t }}</span>
+                {% endif %}
+              </li>
+            {% endif %}
+            <li>
+              {% if settings.display_special_instructions and settings.go_to_checkout %}
+                <textarea id="note" name="note" rows="2" placeholder="{{ 'layout.general.cart_note' | t }}" class="clearfix">{{ cart.note }}</textarea>
+              {% endif %}
+
+              {% if settings.display_tos_checkbox and settings.go_to_checkout %}
+                <p class="tos">
+                  <input type="checkbox" class="tos_agree" id="sliding_agree" required />
+                    <label class="tos_label">
+                      {{ 'cart.general.agree_to_terms_html' | t }}
+                    </label>
+                    {% if settings.tos_page != blank %}
+                      <a href="{{ pages[settings.tos_page].url }}" target="_blank" class="tos_icon">{{ 'cart.general.view_terms' | t }}</a>
+                    {% endif %}
+                </p>
+              {% endif %}
+
+              {% if settings.cart_message != blank %}
+                <div class="cart_text">
+                  {{ settings.cart_message }}
+                </div>
+              {% endif %}
+              
+              
+                  <a href="/cart" class="view_cart_button">View Cart</a>
+              
+              <input type="submit" class="action_button" value="{% if settings.go_to_checkout %}{{ 'layout.general.checkout' | t }}{% else %}{{ 'layout.general.go_to_cart' | t }}{% endif %}" />
+              <div style="margin-top: 10px;">
+                <span>{{ settings.shopping_cart_info_text }}</span>
+              </div>
+              <a class="cart_content__continue-shopping secondary_button" href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}/collections/all{% endif %}">
+                {{ 'cart.general.continue_shopping_link_html' | t }}
+              </a>
+            </li>
+          </ul>
+        </form>
+      </div>
+    {% endunless %}
+  </div>
+
+<style>
+.mobile-cart-container {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100vh;
+    z-index: 99999;
+    background-color: #f1f1f1;
+    color: white;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 20px;
+    opacity: 0.98;
+    overflow-y:auto;
+  }
+
+  .mobile-cart-container.isActive {
+    left: 0%;
+  }
+
+  .cart_content_slider {
+    z-index: 2000;
+    background-color: none;
+    font-family: Roboto;
+    font-weight: lighter;
+    font-size: smaller;
+    text-transform: none;
+    color: black;
+    border-top: 0;
+    border-right: 0;
+    width: 100%;
+    list-style-type: none;
+  } 
+  
+    .cart_content_slider ul {
+    list-style-type: none;
+            padding-left: 0;
+  } 
+
+  .cart_close {
+        margin: 0px 0px 0 0;
+    align-self: flex-end;
+    background: none !important;
+    width: 20px;
+    height: 20px;
+    color: black;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .cart_content_slider .item_title {
+    color: black !important;
+  } 
+
+  .cart_content_slider .view_cart_button {
+    color: black !important;
+  } 
+</style>
+
+<script>
+  const cartButton = document.querySelector('.cart_container_button')
+  const cartClose = document.querySelector('.cart_close')
+  const mobileCart = document.querySelector('.mobile-cart-container')
+
+  
+  cartButton.addEventListener('click', function () {
+    mobileCart.classList.toggle('isActive')
+    }
+  )
+
+      cartClose.addEventListener('click', function () {
+        mobileCart.classList.toggle('isActive')
+      }
+    )
+
+</script>

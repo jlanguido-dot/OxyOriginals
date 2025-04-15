@@ -1,0 +1,1099 @@
+{% assign images_per_row = section.settings.images_per_row %}
+{% assign images_per_row_mobile = section.settings.images_per_row_mobile %}
+{% assign image_grid = section.settings.image_grid %}
+{% assign image_style = section.settings.image_style %}
+{% assign outside_text = section.settings.outside_text %}
+{% assign outside_text_align = section.settings.outside_text_align %}
+{% assign outside_text_box_size = section.settings.outside_text_box_size %}
+{% assign desktop_hidden = section.settings.desktop_hidden %}
+{% assign mobile_hidden = section.settings.mobile_hidden %}
+{% assign section_id = section.id %}
+
+<div class="multi-image-container--{{ section_id }} desktop-hidden-{{ desktop_hidden }} mobile-hidden-{{ mobile_hidden }}">
+  
+  {% for block in section.blocks %}
+  	{% assign image_src = block.settings.image %}
+    {% assign image_link = block.settings.image_link %}
+
+    
+  	<div class="image-container--{{ section_id }}">
+    {% if image_link != blank %}
+      <a href={{ image_link }}>
+          	{% if block.settings.image != nil %}
+    
+    		<img  src="{{ block.settings.image | img_url: '1400x' }}"
+  		alt="{% if block.settings.image.alt != blank %}{{ block.settings.image.alt }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+          class="multi-image-img--{{ section_id }}"
+          data-sizes="auto"
+          data-src="{{ block.settings.image | img_url: '1400x' }}"
+          data-srcset=" {{ block.settings.image | img_url: '240x' }} 240w,
+                        {{ block.settings.image | img_url: '480x' }} 480w,
+                        {{ block.settings.image | img_url: '600x' }} 600w,
+                        {{ block.settings.image | img_url: '800x' }} 800w,
+                        {{ block.settings.image | img_url: '900x' }} 900w,
+                        {{ block.settings.image | img_url: '1000x' }} 1000w"
+           />
+    		
+      	{% if block.settings.mobile_image != nil %} 
+            <img  src="{{ block.settings.mobile_image | img_url: '1400x' }}"
+            alt="{% if block.settings.mobile_image.alt != blank %}{{ block.settings.mobile_image.alt }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+            class="multi-image-mobile-img--{{ section_id }}"
+            data-sizes="auto"
+            data-src="{{ block.settings.mobile_image | img_url: '1400x' }}"
+            data-srcset=" {{ block.settings.mobile_image | img_url: '240x' }} 240w,
+                          {{ block.settings.mobile_image | img_url: '480x' }} 480w,
+                          {{ block.settings.mobile_image | img_url: '600x' }} 600w,
+                          {{ block.settings.mobile_image | img_url: '800x' }} 800w,
+                          {{ block.settings.mobile_image | img_url: '900x' }} 900w,
+                          {{ block.settings.mobile_image | img_url: '1000x' }} 1000w"
+             />
+    		{% endif %}  
+    	 {% endif %} 
+      </a>
+    {% else %}
+      
+    
+    	{% if block.settings.image != nil %}
+    
+    		<img  src="{{ block.settings.image | img_url: '1400x' }}"
+  		alt="{% if block.settings.image.alt != blank %}{{ block.settings.image.alt }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+          class="multi-image-img--{{ section_id }}"
+          data-sizes="auto"
+          data-src="{{ block.settings.image | img_url: '1400x' }}"
+          data-srcset=" {{ block.settings.image | img_url: '240x' }} 240w,
+                        {{ block.settings.image | img_url: '480x' }} 480w,
+                        {{ block.settings.image | img_url: '600x' }} 600w,
+                        {{ block.settings.image | img_url: '800x' }} 800w,
+                        {{ block.settings.image | img_url: '900x' }} 900w,
+                        {{ block.settings.image | img_url: '1000x' }} 1000w"
+           />
+    		
+      	{% if block.settings.mobile_image != nil %} 
+            <img  src="{{ block.settings.mobile_image | img_url: '1400x' }}"
+            alt="{% if block.settings.mobile_image.alt != blank %}{{ block.settings.mobile_image.alt }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+            class="multi-image-mobile-img--{{ section_id }}"
+            data-sizes="auto"
+            data-src="{{ block.settings.mobile_image | img_url: '1400x' }}"
+            data-srcset=" {{ block.settings.mobile_image | img_url: '240x' }} 240w,
+                          {{ block.settings.mobile_image | img_url: '480x' }} 480w,
+                          {{ block.settings.mobile_image | img_url: '600x' }} 600w,
+                          {{ block.settings.mobile_image | img_url: '800x' }} 800w,
+                          {{ block.settings.mobile_image | img_url: '900x' }} 900w,
+                          {{ block.settings.mobile_image | img_url: '1000x' }} 1000w"
+             />
+    		{% endif %}  
+    	 {% endif %} 
+     {% endif %} 
+      
+      {% assign heading = block.settings.heading %}
+      {% assign mobile_heading = block.settings.mobile_heading %}
+      {% assign heading_link = block.settings.heading_link %}
+
+      {% assign heading_cursor = "pointer" %}
+      {% if heading_link == blank %}
+        {% assign heading_link = "#!" %}
+        {% assign heading_cursor = "auto" %}
+      {% endif %}
+
+      {% assign block_id = block.id %}
+      {% assign heading_color = block.settings.heading_color %}
+      {% assign heading_font_size = block.settings.heading_font_size %}
+      {% assign mobile_heading_font_size = block.settings.mobile_heading_font_size %}
+      {% assign text = block.settings.text %}
+      {% assign mobile_text = block.settings.mobile_text %}
+      {% assign text_color = block.settings.text_color %}
+      {% assign text_font_size = block.settings.text_font_size %}
+      {% assign mobile_text_font_size = block.settings.mobile_text_font_size %}
+      {% assign text_align = block.settings.text_align %}
+      {% assign mobile_text_align = block.settings.mobile_text_align %}
+      {% assign heading_position = block.settings.heading_position %}
+      {% assign mobile_heading_position = block.settings.mobile_heading_position %}
+      
+      {% assign button_link = block.settings.button_link %}
+      {% assign button_label = block.settings.button_label %}
+      {% assign button_font_size = block.settings.button_font_size %}
+      {% assign mobile_button_font_size = block.settings.mobile_button_font_size %}
+      {% assign button_padding = block.settings.button_padding %}
+      {% assign button_height = block.settings.button_height %}
+      {% assign button_text_color = block.settings.button_text_color %}
+      {% assign button_background_color = block.settings.button_background_color %}
+      {% assign button_border_thickness = block.settings.button_border_thickness %}
+      {% assign button_border_color = block.settings.button_border_color %}
+      {% assign is_button_rounded = block.settings.rounded_button %}
+      {% assign button_position = block.settings.button_position %}
+      {% assign mobile_button_position = block.settings.mobile_button_position %}
+      
+    {% if outside_text == true %}
+      <div class="text-container--{{ section_id }}">
+             {% if heading != blank or text != blank %}
+          <div class="multi-image-heading">
+           <a href="{{ heading_link }}" class="title multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style="text-decoration: none; cursor: {{ heading_cursor }}; margin: 0 !important; color: {{ heading_color }}; font-size:{{ heading_font_size }}px">{{ heading }}</a>
+        
+        	{% if text != blank %}
+       			 <p class="multi-image-text description" style="margin: 0; margin-bottom: 8px; color: {{ text_color }}; text-align: inherit; font-size:{{ text_font_size }}px">{{ text }}</p>
+        	{% endif %}
+            </div>
+          {% endif %}
+
+      {% if mobile_heading != blank or mobile_text != blank %}
+        <div class="mobile-multi-image-heading">
+           <a href="{{ heading_link }}" class="title mobile-multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style=" margin: 0 !important; text-decoration: none; cursor: {{ heading_cursor }}; color: {{ heading_color }}; font-size:{{ mobile_heading_font_size }}px">{{ mobile_heading }}</a>
+        
+        	{% if mobile_text != blank %}
+        		<p class="mobile-multi-image-text description" style="margin: 0; margin-bottom: 4px; color: {{ text_color }}; text-align: inherit; font-size:{{ mobile_text_font_size }}px">{{ mobile_text }}</p>
+        	{% endif %}
+        </div>
+      {% endif %}
+
+          {% if button_link != blank and button_label != blank %}
+        <a class="multi-image-button--{{ block_id }}" style="margin-top: 0.5px; border-radius: {% if is_button_rounded == true %}10px{% else %}0{% endif %};" href="{{ block.settings.button_link }}" >
+			{{ button_label }}
+           
+        </a>
+      {% endif %}
+
+    </div>
+
+    {% else %}
+    {% if heading_position == button_position and mobile_heading_position == mobile_button_position %}
+      <div class="content-container content-container-{{ heading_position }}--{{ block_id }} mobile-content-container-{{ mobile_heading_position }}--{{ block_id }}">
+        {% if heading != blank or text != blank %}
+          <div class="multi-image-heading">
+           <a href="{{ heading_link }}" class="title multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style="text-decoration: none; cursor: {{ heading_cursor }}; color: {{ heading_color }}; font-size:{{ heading_font_size }}px">{{ heading }}</a>
+        
+        	{% if text != blank %}
+       			 <p class="multi-image-text description" style="color: {{ text_color }}; text-align:{{ text_align }}; font-size:{{ text_font_size }}px">{{ text }}</p>
+        	{% endif %}
+            </div>
+          {% endif %}
+
+      
+      {% if mobile_heading != blank or mobile_text != blank %}
+        <div class="mobile-multi-image-heading">
+           <a href="{{ heading_link }}" class="title mobile-multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style="text-decoration: none; cursor: {{ heading_cursor }}; color: {{ heading_color }}; font-size:{{ mobile_heading_font_size }}px">{{ mobile_heading }}</a>
+        
+        	{% if mobile_text != blank %}
+        		<p class="mobile-multi-image-text description" style="color: {{ text_color }}; text-align:{{ mobile_text_align }}; font-size:{{ mobile_text_font_size }}px">{{ mobile_text }}</p>
+        	{% endif %}
+        </div>
+      {% endif %}
+      
+      {% if button_link != blank and button_label != blank %}
+        <a class="multi-image-button--{{ block_id }}" style="margin-top: 0.5px; border-radius: {% if is_button_rounded == true %}10px{% else %}0{% endif %};" href="{{ block.settings.button_link }}" >
+			{{ button_label }}
+        </a>
+      {% endif %}
+      </div>
+
+    {% else %}
+      
+      {% if heading != blank or text != blank %}
+      <div class="multi-image-heading content-container content-container-{{ heading_position }}--{{ block_id }} mobile-content-container-{{ mobile_heading_position }}--{{ block_id }}">
+           <a href="{{ heading_link }}" class="title multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style="text-decoration: none; cursor: {{ heading_cursor }}; color: {{ heading_color }}; font-size:{{ heading_font_size }}px">{{ heading }}</a>
+        
+        	{% if text != blank %}
+       			 <p class="multi-image-text description" style="color: {{ text_color }}; text-align:{{ text_align }}; font-size:{{ text_font_size }}px">{{ text }}</p>
+        	{% endif %}
+        
+      </div>
+      {% endif %}
+      
+      {% if mobile_heading != blank or mobile_text != blank %}
+      <div class="mobile-multi-image-heading content-container content-container-{{ heading_position }}--{{ block_id }} mobile-content-container-{{ mobile_heading_position }}--{{ block_id }}">
+           <a href="{{ heading_link }}" class="title mobile-multi-image-header{% if heading_link != "#!" %} hover-change {% endif %}" style="text-deocration: none; cursor: {{ heading_cursor }}; color: {{ heading_color }};font-size:{{ mobile_heading_font_size }}px">{{ mobile_heading }}</a>
+        
+        	{% if mobile_text != blank %}
+        		<p class="mobile-multi-image-text description" style="color: {{ text_color }}; text-align:{{ mobile_text_align }}; font-size:{{ mobile_text_font_size }}px">{{ mobile_text }}</p>
+        	{% endif %}
+      </div>
+      {% endif %}
+      
+      {% if button_link != blank and button_label != blank %}
+      <div class="content-container-{{ button_position }}--{{ block_id }} mobile-content-container-{{ mobile_button_position }}--{{ block_id }}">
+        <a class="multi-image-button--{{ block_id }}" style="margin-top: 0.5px; border-radius: {% if is_button_rounded == true %}10px{% else %}0{% endif %};" href="{{ block.settings.button_link }}" >
+			{{ button_label }}
+        </a>
+      </div>
+      {% endif %}
+
+  {% endif %}
+{% endif %}
+      
+{% assign image_padding = "0" %}
+ {% if image_grid == "standard" %}
+    {% assign image_padding = "15px" %}
+ {% else if image_style == "full_width" %}
+      {% assign image_padding = "0" %}
+ {% endif %}
+
+{% assign image_border_radius = "0px" %}
+ {% if image_style == "rounded" %}
+    {% assign image_border_radius = "20px" %}
+  {% endif %}
+ {% if image_style == "circle" %}
+    {% assign image_border_radius = "100%" %}
+  {% endif %}
+ {% if image_style == "square" %}
+     {% assign image_border_radius = "0" %}
+   {% endif %}
+
+  {% assign image_container_display = "block" %}
+  {% assign multi_image_img_height = "100%" %}
+
+  {% if outside_text == true %}
+      {% assign image_container_display = "flex" %}
+      {% assign multi_image_img_height = "auto" %}
+  {% endif %}
+
+  {% assign text_container_justify_content = "center" %}
+  {% assign text_container_align_items = "center" %}
+  {% assign text_container_text_align = "center" %}
+
+  {% if outside_text_align == "center" %}
+    {% assign text_container_justify_content = "center" %}
+    {% assign text_container_align_items = "center" %}
+    {% assign text_container_text_align = "center" %}
+  {% endif %}
+
+  {% if outside_text_align == "left" %}
+    {% assign text_container_justify_content = "flex-start" %}
+    {% assign text_container_align_items = "flex-start" %}
+    {% assign text_container_text_align = "left" %}
+  {% endif %}
+
+  {% if outside_text_align == "right" %}
+    {% assign text_container_justify_content = "flex-end" %}
+    {% assign text_container_align_items = "flex-end" %}
+    {% assign text_container_text_align = "right" %}
+  {% endif %}
+
+  {% assign content_container_top = block.settings.content_container_top %} 
+  {% assign content_container_bottom = block.settings.content_container_bottom %}
+  {% assign content_container_left = block.settings.content_container_left %}
+  {% assign content_container_right = block.settings.content_container_right %}
+
+  {% assign mobile_content_container_top = block.settings.mobile_content_container_top %} 
+  {% assign mobile_content_container_bottom = block.settings.mobile_content_container_bottom %}
+  {% assign mobile_content_container_left = block.settings.mobile_content_container_left %}
+  {% assign mobile_content_container_right = block.settings.mobile_content_container_right %}
+
+  {% assign button_font_size = block.settings.button_font_size %}
+  {% assign button_padding = block.settings.button_padding %}
+  {% assign button_height = block.settings.button_height %}
+  {% assign button_text_color = block.settings.button_text_color %}
+  {% assign button_background_color = block.settings.button_background_color %}
+  {% assign button_border_thickness = block.settings.button_border_thickness %}
+  {% assign button_border_color = block.settings.button_border_color %}
+  {% assign button_hover_text_color = block.settings.button_hover_text_color %}
+  {% assign button_hover_background_color = block.settings.button_hover_background_color %}
+  {% assign button_hover_border_color = block.settings.button_hover_border_color %}
+      
+{% style %}
+.multi-image-container--{{ section_id }} {
+position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+  width: 100%;
+}
+  
+.image-container--{{ section_id }} {
+  overflow: hidden;
+  position: relative;
+  width: calc(100% * (1 / {{images_per_row}}));
+  padding: {{ image_padding }};
+  display: {{ image_container_display }}
+  flex-flow: column nowrap;
+}
+      
+.multi-image-img--{{ section_id }} {
+    border-radius: {{ image_border_radius }};
+    object-fit: cover;
+  width: 100%;
+  height: {{ multi_image_img_height }};
+  vertical-align: middle;
+}
+
+.multi-image-mobile-img--{{ section_id }} {
+    border-radius: {{ image_border_radius }};
+    display: none !important;
+}
+
+.text-container--{{ section_id }} {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: {{ text_container_align_items }};
+  text-align: {{ text_container_text_align }};
+  min-height: {{ outside_text_box_size }}px;
+  padding: 5px 0;
+}
+
+.multi-image-button--{{ block_id }} {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  border: {{ button_border_thickness }}px solid {{ button_border_color }};
+  background: {{ button_background_color }};
+  height: {{ button_height }}px;
+  padding: {{ button_padding }}px;
+  font-size:{{ button_font_size }}px;
+  color: {{ button_text_color }};
+  font-family: Spinnaker;
+  width: max-content;
+}
+
+.multi-image-button--{{ block_id }}:hover {
+  background: {{ button_hover_background_color }};
+  border: {{ button_border_thickness }}px solid {{ button_hover_border_color }};
+  color: {{ button_hover_text_color }};
+  transition: background-color 0.2s cubic-bezier(0.55, 0.09, 0.68, 0.53), color 0.3s linear, border 0.2s cubic-bezier(0.55, 0.09, 0.68, 0.53);
+}
+      
+@media (max-width: 640px) {
+  .image-container--{{ section_id }} {
+    width: calc(
+      100% * (1 / ({{ images_per_row_mobile }}))
+    );
+  }
+      
+   .multi-image-mobile-img--{{ section_id }} {
+    display: block !important;
+	 object-fit: cover;
+  	width: 100%;
+  	height: 100%;
+  	vertical-align: middle;
+  }
+      
+  .multi-image-img--{{ section_id }} {
+    display: none !important;
+  }
+
+  
+  .multi-image-button--{{ block_id }} {
+    font-size:{{ mobile_button_font_size }}px;
+  }
+      
+}
+
+.content-container-bottom-left--{{ block_id }} {
+  position: absolute;
+  bottom: {{ content_container_bottom }}px;
+  left: {{ content_container_left }}px;
+  transform: translate(0, 0);
+  text-align: left;
+}
+
+.content-container-bottom-right--{{ block_id }} {
+  position: absolute;
+  bottom: {{ content_container_bottom }}px;
+  right: {{ content_container_right }}px;
+  transform: translate(0, 0);
+  text-align: right;
+}
+
+.content-container-bottom-center--{{ block_id }} {
+  position: absolute;
+  bottom: {{ content_container_bottom }}px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+}
+
+.content-container-top-left--{{ block_id }} {
+  position: absolute;
+  top: {{ content_container_top }}px;
+  left: {{ content_container_left }}px;
+  transform: translate(0, 0);
+  text-align: left;
+}
+
+.content-container-top-right--{{ block_id }} {
+  position: absolute;
+  top: {{ content_container_top }}px;
+  right: {{ content_container_right }}px;
+  transform: translate(0, 0);
+  text-align: right;
+}
+
+.content-container-top-center--{{ block_id }} {
+  position: absolute;
+  top: {{ content_container_top }}px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+}
+
+.content-container-left--{{ block_id }} {
+  position: absolute;
+  top: 50%;
+  left: {{ content_container_left }}px;
+  transform: translate(0, -50%);
+  text-align: left;
+}
+
+.content-container-right--{{ block_id }} {
+  position: absolute;
+  top: 50%;
+  right: {{ content_container_right }}px;
+  transform: translate(0, -50%);
+  text-align: right;
+}
+
+.content-container-center--{{ block_id }} {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .mobile-content-container-bottom-left--{{ block_id }} {
+    position: absolute !important;
+    bottom: {{ mobile_content_container_bottom }}px !important;
+    left: {{ mobile_content_container_left }}px !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(0, 0) !important;
+    text-align: left !important;
+  }
+
+  .mobile-content-container-bottom-right--{{ block_id }} {
+    position: absolute !important;
+    top: auto !important;
+    right: {{ mobile_content_container_right }}px !important;
+    bottom: {{ mobile_content_container_bottom }}px !important;
+    left: auto !important;
+    transform: translate(0, 0) !important;
+    text-align: right !important;
+  }
+
+  .mobile-content-container-bottom-center--{{ block_id }} {
+    position: absolute !important;
+    bottom: {{ mobile_content_container_bottom }}px !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    transform: translate(-50%, 0) !important;
+    text-align: center !important;
+  }
+
+  .mobile-content-container-top-left--{{ block_id }} {
+    position: absolute !important;
+    bottom: auto !important;
+    right: auto !important;
+    top: {{ mobile_content_container_top }}px !important;
+    left: {{ mobile_content_container_left }}px !important;
+    transform: translate(0, 0) !important;
+    text-align: left !important;
+  }
+
+  .mobile-content-container-top-right--{{ block_id }} {
+    position: absolute !important;
+    bottom: auto !important;
+    left: auto !important;
+    top: {{ mobile_content_container_top }}px !important;
+    right: {{ mobile_content_container_right }}px !important;
+    transform: translate(0, 0) !important;
+    text-align: right !important;
+  }
+
+  .mobile-content-container-top-center--{{ block_id }} {
+    position: absolute !important;
+    top: {{ mobile_content_container_top }}px !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, 0) !important;
+    text-align: center !important;
+  }
+
+  .mobile-content-container-left--{{ block_id }} {
+    position: absolute !important;
+    top: 50%;
+    left: {{ mobile_content_container_left }}px !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(0, -50%) !important;
+    text-align: left !important;
+  }
+
+  .mobile-content-container-right--{{ block_id }} {
+    position: absolute !important;
+    top: 50%;
+    right: {{ mobile_content_container_right }}px !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: translate(0, -50%) !important;
+    text-align: right !important;
+  }
+
+  .mobile-content-container-center--{{ block_id }} {
+    position: absolute !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-align: center !important;
+  }
+}
+{% endstyle %}
+      
+  	 </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Multi Image",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "desktop_hidden",
+      "label": "Hide for desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_hidden",
+      "label": "Hide for mobile"
+    },
+    {
+      "type": "range",
+      "id": "images_per_row",
+      "label": "Images per row",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "images_per_row_mobile",
+      "label": "Mobile images per row",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "image_grid",
+      "label": "Image grid",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "full_width",
+          "label": "Full width"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "image_style",
+      "label": "Image style",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "outside_text",
+      "label": "Outside text"
+    },
+    {
+      "type": "text",
+      "id": "outside_text_box_size",
+      "label": "Outside text box size",
+      "info": "The minimum height of the outside text box container. Only applicable if outside text is checked",
+      "default": "200"
+    },
+    {
+      "type": "select",
+      "id": "outside_text_align",
+      "label": "Outside text align",
+      "info": "Only applicable if outside text is checked",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "image_link",
+          "label": "Image link"
+        },
+        {
+          "type": "text",
+          "id": "content_container_top",
+          "label": "Content top padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "content_container_bottom",
+          "label": "Content bottom padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "content_container_left",
+          "label": "Content left padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "content_container_right",
+          "label": "Content right padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "mobile_content_container_top",
+          "label": "Mobile content top padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "mobile_content_container_bottom",
+          "label": "Mobile content bottom padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "mobile_content_container_left",
+          "label": "Mobile content left padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "mobile_content_container_right",
+          "label": "Mobile content right padding",
+          "default": "35"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "mobile_heading",
+          "label": "Mobile heading"
+        },
+        {
+          "type": "text",
+          "id": "heading_link",
+          "label": "Heading link",
+          "info": "URL redirect for heading"
+        },
+        {
+          "type": "text",
+          "id": "heading_font_size",
+          "label": "Heading font size",
+          "default": "26"
+        },
+        {
+          "type": "text",
+          "id": "mobile_heading_font_size",
+          "label": "Mobile heading font size",
+          "default": "14"
+        },
+        {
+          "type": "text",
+          "id": "heading_color",
+          "label": "Heading Color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "mobile_text",
+          "label": "Mobile text"
+        },
+        {
+          "type": "text",
+          "id": "text_font_size",
+          "label": "Text font size",
+          "default": "16"
+        },
+        {
+          "type": "text",
+          "id": "mobile_text_font_size",
+          "label": "Mobile text font size",
+          "default": "12"
+        },
+        {
+          "type": "text",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text align",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "mobile_text_align",
+          "label": "Mobile text align",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "heading_position",
+          "label": "Heading position",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top-right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "mobile_heading_position",
+          "label": "Mobile heading position",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top-right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "text",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "white",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_hover_text_color",
+          "label": "Button hover text color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_hover_background_color",
+          "label": "Button hover background color",
+          "default": "transparent",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_border_color",
+          "label": "Button border color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_hover_border_color",
+          "label": "Button hover border color",
+          "default": "black",
+          "info": "Color or hex code (e.g. white, black, #D6EFED)"
+        },
+        {
+          "type": "text",
+          "id": "button_border_thickness",
+          "label": "Button border thickness",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "button_font_size",
+          "label": "Button font size",
+          "default": "12"
+        },
+        {
+          "type": "text",
+          "id": "mobile_button_font_size",
+          "label": "Mobile button font size",
+          "default": "12"
+        },
+        {
+          "type": "text",
+          "id": "button_padding",
+          "label": "Button padding",
+          "default": "20"
+        },
+        {
+          "type": "text",
+          "id": "button_height",
+          "label": "Button height",
+          "default": "42"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_button",
+          "label": "Rounded button"
+        },
+        {
+          "type": "select",
+          "id": "button_position",
+          "label": "Button position",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top-right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "mobile_button_position",
+          "label": "Mobile button position",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top-right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom Center"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi Image",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

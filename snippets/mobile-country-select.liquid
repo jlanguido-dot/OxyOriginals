@@ -1,0 +1,537 @@
+{%- assign schema_settings = settings -%}
+
+<div class="mobile-country-select">
+  <button class="mobile-country-select-close">
+    x
+  </button>
+   <h1 class="mobile-country-select-heading">Select your Country</h1>
+  <input type="text" id="country-search" onkeyup="searchThroughCountries()" class="country-search" />
+  <div class="country-options-container">
+     <ul id="country-options" class="country-options"></ul> 
+  </div>
+</div>
+
+<style>
+    .mobile-globe-button  {
+    background: none !important;
+    color: white;
+    font-size: 16px;
+    border: none !important;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 55px;
+    width: 30px;
+      height: 40px;
+  }
+
+  .country-globe-icon {
+    width: 25px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    top: -1px;
+  }
+
+    .country-globe-icon svg{
+    width: 18px;
+    height: 18px;
+    color: white;
+  }
+  
+  .mobile-country-select {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 100vh;
+    z-index: 99999;
+    background-color: #000;
+    color: white;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 20px;
+    opacity: 0.85;
+  }
+
+  .mobile-country-select.isActive {
+    right: 0%;
+  }
+
+  .mobile-country-select-close {
+    margin: 0px 0px 0 0;
+    align-self: flex-end;
+    background: none !important;
+    width: 20px;
+    height: 20px;
+    color: white;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .mobile-country-select-heading {
+    margin: 15px;
+    text-align: center;
+    color: white;
+    font-family: Montserrat,sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .country-search {
+    margin: 10px 0 20px 0;
+    min-height: 40px;
+    font-size: 15px;
+    padding: 0px 15px;
+    border: none;
+    font-family: Montserrat,sans-serif;
+    border-radius: 15px;
+    color: black;
+    flex: 0 1 auto
+  }
+
+  .country-options-container {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    margin-top: 10px;
+  }
+
+    .country-options-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 4px;
+}
+
+.country-options-container::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #c9c9c9;
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+  .country-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .country-item {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 40px;
+    background: none;
+  }
+
+    .country-item:hover {
+    background: none;
+    border: none;
+  }
+
+  .country-item-name {
+    font-size: 14px;
+    color: white;
+    font: Montserrat,sans-serif;
+    text-align: left;
+  }
+
+    .country-item-name:hover {
+    color: #969595 !important;
+  }
+
+  .country-item-choice-flag {
+  width: 25px;
+  margin-right: 15px;
+  color: white;
+      position: relative;
+    top: -1px;
+}
+</style>
+
+<script>
+    var countryOptions = document.getElementById("country-options")
+  
+      var countryList = [
+    { name: "Afghanistan", code: "AF" },
+    { name: "Åland Islands", code: "AX" },
+    { name: "Albania", code: "AL" },
+    { name: "Algeria", code: "DZ" },
+    { name: "American Samoa", code: "AS" },
+    { name: "Andorra", code: "AD" },
+    { name: "Angola", code: "AO" },
+    { name: "Anguilla", code: "AI" },
+    { name: "Antarctica", code: "AQ" },
+    { name: "Antigua and Barbuda", code: "AG" },
+    { name: "Argentina", code: "AR" },
+    { name: "Armenia", code: "AM" },
+    { name: "Aruba", code: "AW" },
+    { name: "Australia", code: "AU" },
+    { name: "Austria", code: "AT" },
+    { name: "Azerbaijan", code: "AZ" },
+    { name: "Bahamas", code: "BS" },
+    { name: "Bahrain", code: "BH" },
+    { name: "Bangladesh", code: "BD" },
+    { name: "Barbados", code: "BB" },
+    { name: "Belarus", code: "BY" },
+    { name: "Belgium", code: "BE" },
+    { name: "Belize", code: "BZ" },
+    { name: "Benin", code: "BJ" },
+    { name: "Bermuda", code: "BM" },
+    { name: "Bhutan", code: "BT" },
+    { name: "Bolivia", code: "BO" },
+    { name: "Bosnia and Herzegovina", code: "BA" },
+    { name: "Botswana", code: "BW" },
+    { name: "Bouvet Island", code: "BV" },
+    { name: "Brazil", code: "BR" },
+    { name: "British Indian Ocean Territory", code: "IO" },
+    { name: "Brunei Darussalam", code: "BN" },
+    { name: "Bulgaria", code: "BG" },
+    { name: "Burkina Faso", code: "BF" },
+    { name: "Burundi", code: "BI" },
+    { name: "Cambodia", code: "KH" },
+    { name: "Cameroon", code: "CM" },
+    { name: "Canada", code: "CA" },
+    { name: "Cape Verde", code: "CV" },
+    { name: "Cayman Islands", code: "KY" },
+    { name: "Central African Republic", code: "CF" },
+    { name: "Chad", code: "TD" },
+    { name: "Chile", code: "CL" },
+    { name: "China", code: "CN" },
+    { name: "Christmas Island", code: "CX" },
+    { name: "Cocos (Keeling) Islands", code: "CC" },
+    { name: "Colombia", code: "CO" },
+    { name: "Comoros", code: "KM" },
+    { name: "Congo", code: "CG" },
+    { name: "Congo, The Democratic Republic of the", code: "CD" },
+    { name: "Cook Islands", code: "CK" },
+    { name: "Costa Rica", code: "CR" },
+    { name: "Cote D'Ivoire", code: "CI" },
+    { name: "Croatia", code: "HR" },
+    { name: "Cuba", code: "CU" },
+    { name: "Cyprus", code: "CY" },
+    { name: "Czech Republic", code: "CZ" },
+    { name: "Denmark", code: "DK" },
+    { name: "Djibouti", code: "DJ" },
+    { name: "Dominica", code: "DM" },
+    { name: "Dominican Republic", code: "DO" },
+    { name: "Ecuador", code: "EC" },
+    { name: "Egypt", code: "EG" },
+    { name: "El Salvador", code: "SV" },
+    { name: "Equatorial Guinea", code: "GQ" },
+    { name: "Eritrea", code: "ER" },
+    { name: "Estonia", code: "EE" },
+    { name: "Ethiopia", code: "ET" },
+    { name: "Falkland Islands (Malvinas)", code: "FK" },
+    { name: "Faroe Islands", code: "FO" },
+    { name: "Fiji", code: "FJ" },
+    { name: "Finland", code: "FI" },
+    { name: "France", code: "FR" },
+    { name: "French Guiana", code: "GF" },
+    { name: "French Polynesia", code: "PF" },
+    { name: "French Southern Territories", code: "TF" },
+    { name: "Gabon", code: "GA" },
+    { name: "Gambia", code: "GM" },
+    { name: "Georgia", code: "GE" },
+    { name: "Germany", code: "DE" },
+    { name: "Ghana", code: "GH" },
+    { name: "Gibraltar", code: "GI" },
+    { name: "Greece", code: "GR" },
+    { name: "Greenland", code: "GL" },
+    { name: "Grenada", code: "GD" },
+    { name: "Guadeloupe", code: "GP" },
+    { name: "Guam", code: "GU" },
+    { name: "Guatemala", code: "GT" },
+    { name: "Guernsey", code: "GG" },
+    { name: "Guinea", code: "GN" },
+    { name: "Guinea-Bissau", code: "GW" },
+    { name: "Guyana", code: "GY" },
+    { name: "Haiti", code: "HT" },
+    { name: "Heard Island and Mcdonald Islands", code: "HM" },
+    { name: "Holy See (Vatican City State)", code: "VA" },
+    { name: "Honduras", code: "HN" },
+    { name: "Hong Kong", code: "HK" },
+    { name: "Hungary", code: "HU" },
+    { name: "Iceland", code: "IS" },
+    { name: "India", code: "IN" },
+    { name: "Indonesia", code: "ID" },
+    { name: "Iran, Islamic Republic Of", code: "IR" },
+    { name: "Iraq", code: "IQ" },
+    { name: "Ireland", code: "IE" },
+    { name: "Isle of Man", code: "IM" },
+    { name: "Israel", code: "IL" },
+    { name: "Italy", code: "IT" },
+    { name: "Jamaica", code: "JM" },
+    { name: "Japan", code: "JP" },
+    { name: "Jersey", code: "JE" },
+    { name: "Jordan", code: "JO" },
+    { name: "Kazakhstan", code: "KZ" },
+    { name: "Kenya", code: "KE" },
+    { name: "Kiribati", code: "KI" },
+    { name: "Korea, Democratic People'S Republic of", code: "KP" },
+    { name: "Korea, Republic of", code: "KR" },
+    { name: "Kuwait", code: "KW" },
+    { name: "Kyrgyzstan", code: "KG" },
+    { name: "Lao People'S Democratic Republic", code: "LA" },
+    { name: "Latvia", code: "LV" },
+    { name: "Lebanon", code: "LB" },
+    { name: "Lesotho", code: "LS" },
+    { name: "Liberia", code: "LR" },
+    { name: "Libyan Arab Jamahiriya", code: "LY" },
+    { name: "Liechtenstein", code: "LI" },
+    { name: "Lithuania", code: "LT" },
+    { name: "Luxembourg", code: "LU" },
+    { name: "Macao", code: "MO" },
+    { name: "Macedonia, The Former Yugoslav Republic of", code: "MK" },
+    { name: "Madagascar", code: "MG" },
+    { name: "Malawi", code: "MW" },
+    { name: "Malaysia", code: "MY" },
+    { name: "Maldives", code: "MV" },
+    { name: "Mali", code: "ML" },
+    { name: "Malta", code: "MT" },
+    { name: "Marshall Islands", code: "MH" },
+    { name: "Martinique", code: "MQ" },
+    { name: "Mauritania", code: "MR" },
+    { name: "Mauritius", code: "MU" },
+    { name: "Mayotte", code: "YT" },
+    { name: "Mexico", code: "MX" },
+    { name: "Micronesia, Federated States of", code: "FM" },
+    { name: "Moldova, Republic of", code: "MD" },
+    { name: "Monaco", code: "MC" },
+    { name: "Mongolia", code: "MN" },
+    { name: "Montserrat", code: "MS" },
+    { name: "Morocco", code: "MA" },
+    { name: "Mozambique", code: "MZ" },
+    { name: "Myanmar", code: "MM" },
+    { name: "Namibia", code: "NA" },
+    { name: "Nauru", code: "NR" },
+    { name: "Nepal", code: "NP" },
+    { name: "Netherlands", code: "NL" },
+    { name: "Netherlands Antilles", code: "AN" },
+    { name: "New Caledonia", code: "NC" },
+    { name: "New Zealand", code: "NZ" },
+    { name: "Nicaragua", code: "NI" },
+    { name: "Niger", code: "NE" },
+    { name: "Nigeria", code: "NG" },
+    { name: "Niue", code: "NU" },
+    { name: "Norfolk Island", code: "NF" },
+    { name: "Northern Mariana Islands", code: "MP" },
+    { name: "Norway", code: "NO" },
+    { name: "Oman", code: "OM" },
+    { name: "Pakistan", code: "PK" },
+    { name: "Palau", code: "PW" },
+    { name: "Palestinian Territory, Occupied", code: "PS" },
+    { name: "Panama", code: "PA" },
+    { name: "Papua New Guinea", code: "PG" },
+    { name: "Paraguay", code: "PY" },
+    { name: "Peru", code: "PE" },
+    { name: "Philippines", code: "PH" },
+    { name: "Pitcairn", code: "PN" },
+    { name: "Poland", code: "PL" },
+    { name: "Portugal", code: "PT" },
+    { name: "Puerto Rico", code: "PR" },
+    { name: "Qatar", code: "QA" },
+    { name: "Reunion", code: "RE" },
+    { name: "Romania", code: "RO" },
+    { name: "Russian Federation", code: "RU" },
+    { name: "RWANDA", code: "RW" },
+    { name: "Saint Helena", code: "SH" },
+    { name: "Saint Kitts and Nevis", code: "KN" },
+    { name: "Saint Lucia", code: "LC" },
+    { name: "Saint Pierre and Miquelon", code: "PM" },
+    { name: "Saint Vincent and the Grenadines", code: "VC" },
+    { name: "Samoa", code: "WS" },
+    { name: "San Marino", code: "SM" },
+    { name: "Sao Tome and Principe", code: "ST" },
+    { name: "Saudi Arabia", code: "SA" },
+    { name: "Senegal", code: "SN" },
+    { name: "Serbia and Montenegro", code: "CS" },
+    { name: "Seychelles", code: "SC" },
+    { name: "Sierra Leone", code: "SL" },
+    { name: "Singapore", code: "SG" },
+    { name: "Slovakia", code: "SK" },
+    { name: "Slovenia", code: "SI" },
+    { name: "Solomon Islands", code: "SB" },
+    { name: "Somalia", code: "SO" },
+    { name: "South Africa", code: "ZA" },
+    { name: "South Georgia and the South Sandwich Islands", code: "GS" },
+    { name: "Spain", code: "ES" },
+    { name: "Sri Lanka", code: "LK" },
+    { name: "Sudan", code: "SD" },
+    { name: "Suriname", code: "SR" },
+    { name: "Svalbard and Jan Mayen", code: "SJ" },
+    { name: "Swaziland", code: "SZ" },
+    { name: "Sweden", code: "SE" },
+    { name: "Switzerland", code: "CH" },
+    { name: "Syrian Arab Republic", code: "SY" },
+    { name: "Taiwan, Province of China", code: "TW" },
+    { name: "Tajikistan", code: "TJ" },
+    { name: "Tanzania, United Republic of", code: "TZ" },
+    { name: "Thailand", code: "TH" },
+    { name: "Timor-Leste", code: "TL" },
+    { name: "Togo", code: "TG" },
+    { name: "Tokelau", code: "TK" },
+    { name: "Tonga", code: "TO" },
+    { name: "Trinidad and Tobago", code: "TT" },
+    { name: "Tunisia", code: "TN" },
+    { name: "Turkey", code: "TR" },
+    { name: "Turkmenistan", code: "TM" },
+    { name: "Turks and Caicos Islands", code: "TC" },
+    { name: "Tuvalu", code: "TV" },
+    { name: "Uganda", code: "UG" },
+    { name: "Ukraine", code: "UA" },
+    { name: "United Arab Emirates", code: "AE" },
+    { name: "United Kingdom", code: "GB" },
+    { name: "United States", code: "US" },
+    { name: "United States Minor Outlying Islands", code: "UM" },
+    { name: "Uruguay", code: "UY" },
+    { name: "Uzbekistan", code: "UZ" },
+    { name: "Vanuatu", code: "VU" },
+    { name: "Venezuela", code: "VE" },
+    { name: "Viet Nam", code: "VN" },
+    { name: "Virgin Islands, British", code: "VG" },
+    { name: "Virgin Islands, U.S.", code: "VI" },
+    { name: "Wallis and Futuna", code: "WF" },
+    { name: "Western Sahara", code: "EH" },
+    { name: "Yemen", code: "YE" },
+    { name: "Zambia", code: "ZM" },
+    { name: "Zimbabwe", code: "ZW" },
+    ];
+
+  // search functionality
+  function searchThroughCountries() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('country-search');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("country-options");
+    li = ul.getElementsByTagName('li');
+  
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+      a = li[i].getElementsByTagName("span")[0];
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+
+  var countryGlobeIcon = document.getElementById("country-globe-icon")
+  var countryInStorage = localStorage.getItem("country")
+  function setGlobeToGlobe() {
+    countryGlobeIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 21 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z"/></svg>`
+  }
+  function setGlobeToCountry(countryCode) {
+          var c = localStorage.getItem("country")
+          countryGlobeIcon.innerHTML = `<img class="country-item-choice-flag" src="https://hatscripts.github.io/circle-flags/flags/${c.toLowerCase()}.svg" width="25" />`
+  }
+
+  if(countryInStorage && countryInStorage !== "placeholder") {
+        setGlobeToCountry(countryInStorage)
+  } else {
+    setGlobeToGlobe()
+  }
+
+  var settings = {{ schema_settings | json }}
+
+    // filter through countries based on settings
+      var countryListModified = countryList.filter(function(c) {
+      var currentSetting = `country_select_option_${c.code}`
+      var shouldKeep = settings[currentSetting]
+      return shouldKeep === true
+    })
+
+    function getCountryLink(code) {
+    var link = `country_select_link_${code}`
+    return settings[link]
+  }
+
+      // open and close menu functionality
+      const mobileCountryBtn = document.querySelector('.mobile-globe-button')
+    const mobileCountryClose = document.querySelector('.mobile-country-select-close')
+    const mobileCountrySelect = document.querySelector('.mobile-country-select')
+
+        // open menu automatically if no country selected
+  if(window.innerWidth <= 798 && (!localStorage.getItem("country") || localStorage.getItem("country") === "placeholder")) {
+    mobileCountrySelect.classList.toggle('isActive')
+  }
+
+    mobileCountryBtn.addEventListener('click', function () {
+        if(countryOptions?.getElementsByTagName("li").length === 0) {
+        countryListModified.map((country) => { 
+        var countryListItem = document.createElement("li")
+        countryListItem.class = "country-list-item"
+        countryListItem.innerHTML = `<button id="country-item-${country.code}" class="country-item"><div class="country-item-image"><img class="country-item-choice-flag" src="https://hatscripts.github.io/circle-flags/flags/${country.code.toLowerCase()}.svg" width="25" /></div><span class="country-item-name">${country.name}</span></button>`
+        countryOptions.append(countryListItem)
+    
+        var countryItemButton = document.getElementById(`country-item-${country.code}`) 
+        countryItemButton.addEventListener("click", function() {
+            var link = getCountryLink(country.code)
+          
+            if (link.includes("https://oxyoriginals.ph")) {
+              localStorage.setItem("country", "placeholder")
+              window.location.href = link
+              setGlobeToGlobe()
+              mobileCountrySelect.classList.toggle('isActive')
+              return
+            }
+          
+            window.history.replaceState(null, null, window.location.pathname);
+          
+          localStorage.setItem("country", country.code);
+          setGlobeToCountry(country.code)
+          mobileCountrySelect.classList.toggle('isActive')
+        })
+      })
+        }
+        mobileCountrySelect.classList.toggle('isActive')
+      document.getElementById('country-search').focus()
+      }
+    )
+
+    mobileCountryClose.addEventListener('click', function () {
+        mobileCountrySelect.classList.toggle('isActive')
+      }
+    )
+  
+  countryListModified.map((country) => { 
+    var countryListItem = document.createElement("li")
+    countryListItem.class = "country-list-item"
+    countryListItem.innerHTML = `<button id="country-item-${country.code}" class="country-item"><div class="country-item-image"><img class="country-item-choice-flag" src="https://hatscripts.github.io/circle-flags/flags/${country.code.toLowerCase()}.svg" width="25" /></div><span class="country-item-name">${country.name}</span></button>`
+    countryOptions.append(countryListItem)
+
+    var countryItemButton = document.getElementById(`country-item-${country.code}`) 
+    countryItemButton.addEventListener("click", function() {
+        var link = getCountryLink(country.code)
+      
+        if (link.includes("https://oxyoriginals.ph")) {
+          localStorage.setItem("country", "placeholder")
+          window.location.href = link
+          setGlobeToGlobe()
+          mobileCountrySelect.classList.toggle('isActive')
+          return
+        }
+      
+        window.history.replaceState(null, null, window.location.pathname);
+      
+      localStorage.setItem("country", country.code);
+      setGlobeToCountry(country.code)
+      mobileCountrySelect.classList.toggle('isActive')
+    })
+  })
+
+  window.addEventListener('resize', function(event) {
+      var cs = localStorage.getItem("country");
+     if(cs && cs !== "placeholder") {
+       setGlobeToCountry(cs)
+     }
+  });
+
+</script>
