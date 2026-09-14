@@ -1,7 +1,7 @@
-  
+{% if section and section.location != blank %}Liquid syntax error (snippets/popup-size-chart line 4): Expected close_square but found pipe in "pages[product.type | handleize | append: "-size-chart"] != empty"{% else %}  
 {%- assign chart = "size-chart" -%}
 
-{%- if pages[product.type | handleize | append: "-size-chart"] != empty -%}
+{%- if pages.product.type -%}
 {%- assign chart = product.type | handleize | append: "-size-chart" -%}
 {%- endif -%}
 
@@ -33,4 +33,41 @@
     {{ pages[settings.size_chart].content }}
   {% endif %}
 
-</div>
+</div>{% endif %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "  \n{%- assign chart = \"size-chart\" -%}\n\n{%- if pages[product.type |
+    handleize | append: \"-size-chart\"] != empty -%}\n{%- assign chart = product.type
+    | handleize | append: \"-size-chart\" -%}\n{%- endif -%}\n\n  {%- for tag in product.tags
+    -%}\n   {%- assign chart_tag = tag | handleize | append: \"-size-chart\" -%}\n\n
+    \  {%- if pages[chart_tag] != empty -%}\n\t{%- assign chart = chart_tag -%}\n
+    \   {%- break -%}\n   {%- endif -%}\n\n  {%- endfor -%}\n\n  {%- assign size_chart_page
+    = pages[chart] -%}\n\n<div class=\"remodal\" data-remodal-id=\"size-chart{{product_id}}\"
+    data-remodal-options=\"hashTracking: false\">\n<a data-remodal-action=\"close\"
+    class=\"remodal-close\"></a>\n\n  \n  \n  {% if size_chart_page != blank %}\n
+    \     <h5 class=\"center\">{{ size_chart_page.title }}</h5>\n    <div class=\"feature_divider\"></div>\n
+    \   {{ size_chart_page.content }}\n  \n  {% elsif settings.size_chart != blank
+    %}\n    <h5 class=\"center\">{{ pages[settings.size_chart].title }}</h5>\n    <div
+    class=\"feature_divider\"></div>\n    {{ pages[settings.size_chart].content }}\n
+    \ {% endif %}\n\n</div>"
+  to: "{% if section and section.location != blank %}Liquid syntax error (snippets/popup-size-chart
+    line 4): Expected close_square but found pipe in \"pages[product.type | handleize
+    | append: \"-size-chart\"] != empty\"{% else %}  \n{%- assign chart = \"size-chart\"
+    -%}\n\n{%- if pages.product.type -%}\n{%- assign chart = product.type | handleize
+    | append: \"-size-chart\" -%}\n{%- endif -%}\n\n  {%- for tag in product.tags
+    -%}\n   {%- assign chart_tag = tag | handleize | append: \"-size-chart\" -%}\n\n
+    \  {%- if pages[chart_tag] != empty -%}\n\t{%- assign chart = chart_tag -%}\n
+    \   {%- break -%}\n   {%- endif -%}\n\n  {%- endfor -%}\n\n  {%- assign size_chart_page
+    = pages[chart] -%}\n\n<div class=\"remodal\" data-remodal-id=\"size-chart{{product_id}}\"
+    data-remodal-options=\"hashTracking: false\">\n<a data-remodal-action=\"close\"
+    class=\"remodal-close\"></a>\n\n  \n  \n  {% if size_chart_page != blank %}\n
+    \     <h5 class=\"center\">{{ size_chart_page.title }}</h5>\n    <div class=\"feature_divider\"></div>\n
+    \   {{ size_chart_page.content }}\n  \n  {% elsif settings.size_chart != blank
+    %}\n    <h5 class=\"center\">{{ pages[settings.size_chart].title }}</h5>\n    <div
+    class=\"feature_divider\"></div>\n    {{ pages[settings.size_chart].content }}\n
+    \ {% endif %}\n\n</div>{% endif %}"
+  position: 0..1228
+{%- endcomment -%}
